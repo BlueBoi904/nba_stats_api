@@ -7,9 +7,18 @@ import os
 
 # Get environment variables
 api_key = os.getenv('API_KEY')
+season = '2023'
+team = 'ORL'
 
-api_url = f"https://api.sportsdata.io/v3/nba/scores/json/AreAnyGamesInProgress?key={api_key}"
+url_base = "https://api.sportsdata.io/v3/nba/scores/json"
+url_extension = f"/Players/{team}?key={api_key}"
 
-response = requests.get(api_url)
+response = requests.get(url_base + url_extension)
+# Response returns a list of dict with info pertaining to each player on a team.
+data = response.json()
 
-print(response.json())
+for item in data:
+    if item["PlayerID"]:
+        print(item["PlayerID"])
+    if item["YahooName"]:
+        print(item["YahooName"])
